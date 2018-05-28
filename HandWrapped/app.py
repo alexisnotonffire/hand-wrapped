@@ -6,6 +6,7 @@ class App:
             self.name = config['app']['name']
             self.author = config['app']['author']
             self.description = config['app']['description']
+            self.alert = config['app']['alert']
             self.spotify = config['app']['spotify']
             self.google = config['app']['google']
         except (TypeError, KeyError):

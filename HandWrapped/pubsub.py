@@ -2,10 +2,18 @@ import json
 import os
 from google.cloud import pubsub
 
+messages = []
+
 def storeMessages(message):
-    print(message.data)
-    with open('./tempStore.json', 'a') as f:
-        f.write(json.dumps(message.data.decode('utf-8'), ensure_ascii=False) + '\n')
+    try:
+        messages.append(
+            json.dumps(
+                json.loads(message.data.decode('utf-8')),ensure_ascii=True
+            )
+        )
+    except Exception as err:
+        print('problem storing because', err, '\n', message.data)
+        message.nack()
 
     message.ack()
 
@@ -16,9 +24,11 @@ def pubMessage(messages, topic):
                 .format(os.getenv('GOOGLE_CLOUD_PROJECT'), topic)
 
     for message in messages:
-        publisher.publish(topic,
-            json.dumps(message, ensure_ascii=False).encode('utf-8')
-        )
+        try:
+            jMessage = json.dumps(message, ensure_ascii=False).encode('utf-8')
+            publisher.publish(topic, jMessage)
+        except Exception as err:
+            print('publishing failed because of {}\n'.format(err), message)
 
 
 def subMessage(sub):

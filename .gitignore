@@ -1,1 +1,13 @@
+include/*
+share/*
+bin/*
+lib/*
+.pytest_cache/*
+
+*__pycache__/
+*.backup
 *.pyc
+*.ini
+
+pyvenv.cfg
+lib64

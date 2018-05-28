@@ -10,15 +10,17 @@ def getUnixFrom(str):
 
 
 def getAfterValue(res):
-    plays = (getUnixFrom(tracks['played_at']) for tracks in res['items'])
+    plays = (getUnixFrom(track['played_at']) for track in res)
     return sorted(plays)[-1]
 
 
 def updateAfter(configPath, after):
-    with open(configPath, 'r+') as f:
-        config = yaml.load(f)
+    with open(configPath, 'r') as f:
+        config = YAML().load(f)
         config['app']['spotify']['after'] = after
-        YAML.dump(config, f)
+
+    with open(configPath, 'w') as f:
+        YAML().dump(config, f)
 
 def recentlyPlayed(access_token, after, limit):
     url = 'https://api.spotify.com/v1/me/player/recently-played'
