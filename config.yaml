@@ -1,0 +1,17 @@
+app:
+  name: hand-wrapped
+  author: alexisnotonffire
+  description: gets your recently played tracks, pushed to pubsub then bigquery
+  alert: # If you have an IFTTT webhook you can alert yourself there
+  spotify:
+    redirect_uri: # Your internet accessible URI
+    client_id: # Your client id
+    client_secret: # Your client secret
+    code: # The parameter Spotify sends to your redirect_uri
+    scope: playlist-read-private user-library-read user-read-recently-played user-top-read
+    after: 0
+
+  google:
+    project: # Your GCP project
+    dataset: # Your BigQuery dataset
+    table: # Your BigQuery table
