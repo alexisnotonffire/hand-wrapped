@@ -9,9 +9,9 @@ def getUnixFrom(str):
     return timegm(datetime.strptime(str, '%Y-%m-%dT%H:%M:%S.%fZ').timetuple())
 
 
-def getAfterValue(res):
-    plays = (getUnixFrom(track['played_at']) for track in res)
-    return sorted(plays)[-1]
+def getAfterValue(tracks):
+    tracks = (getUnixFrom(track['played_at']) for track in tracks)
+    return (sorted(tracks)[-1] + 1)*1000
 
 
 def updateAfter(configPath, after):
@@ -21,6 +21,7 @@ def updateAfter(configPath, after):
 
     with open(configPath, 'w') as f:
         YAML().dump(config, f)
+
 
 def recentlyPlayed(access_token, after, limit):
     url = 'https://api.spotify.com/v1/me/player/recently-played'

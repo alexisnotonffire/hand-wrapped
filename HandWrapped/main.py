@@ -95,9 +95,13 @@ if __name__ == '__main__':
         50
     )['items']
     status = bool(tracks)
+    notracks = len(tracks)
     if status:
         print(f'{len(tracks)} new tracks received!')
         after = spotify.getAfterValue(tracks)
+    elif tracks != None:
+        print('nothing new found')
+        exit()
     else:
         print('something fucked up')
         r.get(url=config['app']['alert'])
