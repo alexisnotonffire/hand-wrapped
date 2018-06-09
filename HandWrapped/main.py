@@ -15,6 +15,10 @@ import requests as r
 import google.api_core.exceptions as e
 from ruamel.yaml import YAML
 
+# TODO: Write alert parameter function
+#       Automate code storage
+#       Dockerise
+
 if __name__ == '__main__':
 
     configLocation = './../config.yaml'
@@ -84,7 +88,8 @@ if __name__ == '__main__':
                 YAML().dump(config, f)
             print('tokens loaded')
         else:
-            r.get(url=config['app']['alert'])
+            url=config['app']['alert'] + '?value1=tokens_error'
+            r.get(url=url)
             print('sent failure alert')
 
     # Fetch tracks
@@ -97,14 +102,15 @@ if __name__ == '__main__':
     status = bool(tracks)
     notracks = len(tracks)
     if status:
-        print(f'{len(tracks)} new tracks received!')
+        print('{} new tracks received!'.format(len(tracks)))
         after = spotify.getAfterValue(tracks)
     elif tracks != None:
         print('nothing new found')
         exit()
     else:
+        url=config['app']['alert'] + '?value1=tracks_error'
         print('something fucked up')
-        r.get(url=config['app']['alert'])
+        r.get(url=url)
         print('sent failure alert')
         exit()
 
@@ -135,8 +141,9 @@ if __name__ == '__main__':
             print('job done, starting cleanup')
             spotify.updateAfter(configLocation, after)
         except e.BadRequest as err:
-            r.get(url=config['app']['alert'])
-            print(f'sent failure alert: {err}')
+            url=config['app']['alert'] + '?value1=load_error'
+            r.get(url=url)
+            print('sent failure alert: {}'.format(err))
             exit()
 
     print('finished')

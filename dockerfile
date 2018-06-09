@@ -14,7 +14,7 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 EXPOSE 80
 
 # Define environment variable
-ENV NAME World
+ENV GOOGLE_APPLICATION_CREDENTIALS="/mnt/d/Alex/Google Drive/Projects/GiftWrapped" GOOGLE_CLOUD_PROJECT=alexisnotonffire-hello-world
 
 # Run app.py when the container launches
 CMD ["python", "app.py"]

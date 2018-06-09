@@ -1,3 +1,4 @@
 requests
 ruamel.yaml
 google.cloud
+google-cloud-bigquery
